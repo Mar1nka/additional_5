@@ -1,33 +1,38 @@
-const Stack = require('./Stack');
+const Stack = require('./stack');
 
 function check(str, bracketsConfig) {
 
-    var arr = [];
-    arr = new Stack();
+    var stack = [];
+    stack = new Stack();
 
     for (var i = 0; i < str.length; i++) {
-        if (arr.length() > 0) {
+        var currentBracket = str[i];
+
+        if (stack.getLastElement() != null) {
             var isFoundCouple = false;
 
             for (var j = 0; j < bracketsConfig.length; j++) {
-                if (arr.getLastElement() === bracketsConfig[j][0] && str[i] === bracketsConfig[j][1]) {
+                var openBracket = bracketsConfig[j][0];
+                var closeBracket = bracketsConfig[j][1];
+
+                if (stack.getLastElement() === openBracket && currentBracket === closeBracket) {
                     isFoundCouple = true;
                     break;
                 }
             }
 
             if (isFoundCouple === true) {
-                arr.pop();
+                stack.pop();
             } else {
-                arr.push(str[i]);
+                stack.push(currentBracket);
             }
 
         } else {
-            arr.push(str[i]);
+            stack.push(currentBracket);
         }
     }
 
-    if (arr.length() === 0) {
+    if (stack.length() === 0) {
         return true;
     }
 
