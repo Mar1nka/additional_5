@@ -1,6 +1,36 @@
-const Stack = require('./stack');
+class Stack {
+    constructor () {
+        this.arr = [];
+    }
 
-function check(str, bracketsConfig) {
+    push (element) {
+        this.arr.push(element);
+    }
+
+    pop () {
+        if (this.arr.length) {
+            var lastElement = this.arr[this.arr.length - 1];
+            this.arr.splice(this.arr.length - 1, 1);
+            return lastElement;
+        } else {
+            return null;
+        }
+    }
+
+    getLastElement () {
+        if (this.arr.length) {
+            return this.arr[this.arr.length - 1];
+        } else {
+            return null;
+        }
+    }
+
+    length () {
+        return this.arr.length;
+    }
+}
+
+function check (str, bracketsConfig) {
 
     var stack = [];
     stack = new Stack();
@@ -8,7 +38,7 @@ function check(str, bracketsConfig) {
     for (var i = 0; i < str.length; i++) {
         var currentBracket = str[i];
 
-        if (stack.getLastElement() != null) {
+        if (stack.getLastElement() !== null) {
             var isFoundCouple = false;
 
             for (var j = 0; j < bracketsConfig.length; j++) {
@@ -17,26 +47,22 @@ function check(str, bracketsConfig) {
 
                 if (stack.getLastElement() === openBracket && currentBracket === closeBracket) {
                     isFoundCouple = true;
+                    stack.pop();
                     break;
                 }
             }
 
-            if (isFoundCouple === true) {
-                stack.pop();
-            } else {
+            if (!isFoundCouple) {
                 stack.push(currentBracket);
             }
+
 
         } else {
             stack.push(currentBracket);
         }
     }
 
-    if (stack.length() === 0) {
-        return true;
-    }
-
-    return false;
+    return stack.length() === 0;
 }
 
 module.exports = check;
